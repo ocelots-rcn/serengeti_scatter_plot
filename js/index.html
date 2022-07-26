@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+  <script src="./includes/axios.min.js" ></script>
+  <script src="./includes/plotly-2.12.1.min.js" ></script>
+  <script src="./includes/slimselect.min.js"></script>
+  <link href="./includes/slimselect.min.css" rel="stylesheet">
+
+  <script>
+    const switchTab = (el) => {
+      let tabParent = el.parentElement;
+      let tabName = el.getAttribute("name");
+
+      // Cycle through tabs to change look
+      for (let child of tabParent.children) {
+        el == child ? child.style['background-color'] = '#EEE' : child.style['background-color'] = '#FFF';
+      };
+
+      // Cycle through content divs
+      for (let child of tabParent.parentElement.children) {
+        if(child.getAttribute("name") !== 'tabs') {
+          let divName = child.getAttribute("name");
+          tabName == divName ? child.style.display = 'block' : child.style.display = 'none';
+        }
+      };
+    }
+  </script>
+</head>
+
+<body style="overflow-x: hidden">
+  <div style="display: flex;flex-direction: row;">
+    <div style="width: 250px;padding: 5px">
+      <div name="tabs" style="display: flex;flex-direction: row;margin-bottom: 5px">
+        <div name="overview" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer;background-color: #EEE" onclick="switchTab(this)">Overview</div>
+        <div name="filters" style="flex: 1;padding: 10px;border: 1px solid #CCC;cursor: pointer" onclick="switchTab(this)">Filters</div>
+      </div>
+      <div name="overview">
+        <p style="font-size: 1.2em">Scatterplots and comparing continuous variables</p>
+        <p>Scatterplots are useful graphs for exploring the relationship between two continuous variables.</p>
+        <p>In this scatterplot, each dot represents data from a single photo from a specific camera trap. The line (regression line) represents the “average” relationship between two variables, averaged across all the data points.</p>
+        <p>You can use the filters to narrow down what photos you are interested in. You can also select multiple species to compare. The data for each species will be represented by a different color.</p>
+      </div>
+      <div name="filters" style="display: none">
+        <span style="font-weight: bold">Species</span><br />
+        <select id="ScatterSpecies" multiple></select><br />
+        <hr>
+        <span style="font-weight: bold">Variable</span><br />
+        <span style="font-weight: bold">X-Axis</span><br />
+        <select id="ScatterX" ></select><br />
+        <span style="font-weight: bold">Y-Axis</span><br />
+        <select id="ScatterY" ></select><br />
+      </div>
+    </div>
+    <div id="ScatterPlot" style="flex: 1;min-height: 500px"></div>
+  </div>
+
+</body>
+<script src="./scatter.js"></script>
+</html>
